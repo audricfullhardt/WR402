@@ -7,23 +7,37 @@ let offsetY = 0;
 let isResizing = false;
 
 pieces.forEach((piece) => {
-  piece.addEventListener("mousedown", startDrag);
+  // Gestion du drag
   piece.addEventListener("mousedown", (e) => {
-    if (e.target === piece) {
+    // Vérifier si on clique sur la poignée de redimensionnement
+    const rect = piece.getBoundingClientRect();
+    const isResizeHandle = 
+      e.clientX > rect.right - 20 && 
+      e.clientY > rect.bottom - 20;
+    
+    if (!isResizeHandle) {
+      startDrag(e);
+    } else {
       isResizing = true;
     }
   });
+
+  // Gestion du resize
   piece.addEventListener("mouseup", () => {
-    isResizing = false;
-    updateBackgroundPosition(piece);
-    checkOverlap();
+    if (isResizing) {
+      isResizing = false;
+      updateBackgroundPosition(piece);
+      checkOverlap();
+    }
   });
+
   piece.addEventListener("mousemove", (e) => {
     if (isResizing) {
       updateBackgroundPosition(piece);
       checkOverlap();
     }
   });
+
   updateBackgroundPosition(piece);
 });
 
