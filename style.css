@@ -1,7 +1,7 @@
 body {
     margin: 0;
     overflow: hidden;
-    background: #000;
+    background: #fff;
     position: relative;
   }
   
@@ -9,22 +9,21 @@ body {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background: url('enfer.png') center/cover no-repeat;
-    background-size: cover;
+    background: #fff;
   }
   
   .vignette-piece {
     position: absolute;
     width: 200px;
     height: 200px;
-    background: white;
+    background: url('enfer.png') no-repeat;
+    background-size: 100vw 100vh;
     border: 2px solid black;
     cursor: grab;
-    clip-path: inset(0 0 0 0);
-    -webkit-clip-path: inset(0 0 0 0);
   }
   
   .vignette-piece.overlapping {
-    background: url('paradis.png') center/cover no-repeat;
+    background: url('paradis.png') no-repeat;
+    background-size: 100vw 100vh;
   }
   
