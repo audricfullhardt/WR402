@@ -46,8 +46,11 @@ body {
     overflow: auto;
     min-width: 100px;
     min-height: 100px;
-    mask-image: none;
-    -webkit-mask-image: none;
+    transform-origin: top left;
+  }
+  
+  .vignette-piece:active {
+    cursor: grabbing;
   }
   
   .vignette-piece.overlapping {

@@ -1,15 +1,34 @@
 const pieces = document.querySelectorAll(".vignette-piece");
+const container = document.getElementById("vignette-container");
 
 let currentPiece = null;
 let offsetX = 0;
 let offsetY = 0;
+let isResizing = false;
 
 pieces.forEach((piece) => {
   piece.addEventListener("mousedown", startDrag);
+  piece.addEventListener("mousedown", (e) => {
+    if (e.target === piece) {
+      isResizing = true;
+    }
+  });
+  piece.addEventListener("mouseup", () => {
+    isResizing = false;
+    updateBackgroundPosition(piece);
+    checkOverlap();
+  });
+  piece.addEventListener("mousemove", (e) => {
+    if (isResizing) {
+      updateBackgroundPosition(piece);
+      checkOverlap();
+    }
+  });
   updateBackgroundPosition(piece);
 });
 
 function startDrag(e) {
+  if (isResizing) return;
   currentPiece = e.target;
   offsetX = e.clientX - currentPiece.offsetLeft;
   offsetY = e.clientY - currentPiece.offsetTop;
@@ -19,7 +38,7 @@ function startDrag(e) {
 }
 
 function drag(e) {
-  if (!currentPiece) return;
+  if (!currentPiece || isResizing) return;
 
   currentPiece.style.left = e.clientX - offsetX + "px";
   currentPiece.style.top = e.clientY - offsetY + "px";
@@ -89,7 +108,7 @@ function createOverlapArea(overlapRect) {
   const offsetY = overlapRect.top - bodyRect.top;
   overlapArea.style.backgroundPosition = `-${offsetX}px -${offsetY}px`;
   
-  document.body.appendChild(overlapArea);
+  container.appendChild(overlapArea);
 }
 
 function isOverlapping(r1, r2) {
