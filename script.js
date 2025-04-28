@@ -45,9 +45,8 @@ function updateBackgroundPosition(piece) {
 }
 
 function checkOverlap() {
-  pieces.forEach((piece) => {
-    piece.classList.remove("overlapping");
-  });
+  // Supprimer toutes les zones de chevauchement existantes
+  document.querySelectorAll('.overlap-area').forEach(area => area.remove());
 
   pieces.forEach((piece1) => {
     let rect1 = piece1.getBoundingClientRect();
@@ -58,11 +57,39 @@ function checkOverlap() {
       let rect2 = piece2.getBoundingClientRect();
 
       if (isOverlapping(rect1, rect2)) {
-        piece1.classList.add("overlapping");
-        piece2.classList.add("overlapping");
+        const overlapRect = getOverlapRect(rect1, rect2);
+        createOverlapArea(overlapRect);
       }
     });
   });
+}
+
+function getOverlapRect(r1, r2) {
+  return {
+    left: Math.max(r1.left, r2.left),
+    right: Math.min(r1.right, r2.right),
+    top: Math.max(r1.top, r2.top),
+    bottom: Math.min(r1.bottom, r2.bottom)
+  };
+}
+
+function createOverlapArea(overlapRect) {
+  const overlapArea = document.createElement('div');
+  overlapArea.className = 'overlap-area';
+  
+  // Positionner la zone de chevauchement
+  overlapArea.style.left = overlapRect.left + 'px';
+  overlapArea.style.top = overlapRect.top + 'px';
+  overlapArea.style.width = (overlapRect.right - overlapRect.left) + 'px';
+  overlapArea.style.height = (overlapRect.bottom - overlapRect.top) + 'px';
+  
+  // Ajuster la position du fond
+  const bodyRect = document.body.getBoundingClientRect();
+  const offsetX = overlapRect.left - bodyRect.left;
+  const offsetY = overlapRect.top - bodyRect.top;
+  overlapArea.style.backgroundPosition = `-${offsetX}px -${offsetY}px`;
+  
+  document.body.appendChild(overlapArea);
 }
 
 function isOverlapping(r1, r2) {

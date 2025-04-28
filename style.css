@@ -46,10 +46,24 @@ body {
     overflow: auto;
     min-width: 100px;
     min-height: 100px;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
   
   .vignette-piece.overlapping {
     background: url('paradis.png') no-repeat;
     background-size: 100vw 100vh;
+    mask-image: url('mask.svg');
+    -webkit-mask-image: url('mask.svg');
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+  }
+  
+  .overlap-area {
+    position: absolute;
+    background: url('paradis.png') no-repeat;
+    background-size: 100vw 100vh;
+    pointer-events: none;
+    z-index: 2;
   }
   
